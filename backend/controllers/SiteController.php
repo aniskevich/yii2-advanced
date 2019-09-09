@@ -60,7 +60,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if(Yii::$app->user->can('adminPageAccess')) {
+            return $this->render('index');
+        } else {
+            $this->actionLogout();
+        }
+
     }
 
     /**
