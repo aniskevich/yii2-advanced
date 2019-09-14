@@ -1,17 +1,44 @@
-<h3>Task name: <?=$task['name']?></h3>
-<p>Task description: <?=$task['description']?></p>
-<p>Task author: <?=$task['author']?></p>
-<p>Task reporter: <?=$task['reporter']?></p>
-<p> Task status: <?=$task['status']?></p>
+<?php
 
-<p>Task tags:</p>
-<?php foreach ($task['tags'] as $tag) : ?>
-<p><?=$tag?></p>
-<?php endforeach; ?>
+use yii\helpers\Html;
+use yii\widgets\DetailView;
 
-<p>Task priority: <?=$task['priority']?></p>
+/* @var $this yii\web\View */
+/* @var $model common\models\Task */
 
-<p>Comments:</p>
-<?php foreach ($comments as $comment) : ?>
-    <p><?=$comment?></p>
-<?php endforeach; ?>
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+\yii\web\YiiAsset::register($this);
+?>
+<div class="task-view">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <p>
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'name',
+            'description',
+            'author_id',
+            'reporter_id',
+            'status_id',
+            'priority_id',
+            'created_at',
+            'updated_at',
+        ],
+    ]) ?>
+
+</div>
