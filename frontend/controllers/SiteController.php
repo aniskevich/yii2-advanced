@@ -14,6 +14,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\User;
 
 /**
  * Site controller
@@ -260,5 +261,22 @@ class SiteController extends Controller
 
     public function actionHello() {
         return $this->render('hello');
+    }
+
+    public function actionAddAdmin() {
+        $model = User::find()->where(['username' => 'admin'])->one();
+        if (empty($model)) {
+            $user = new User();
+            $user->username = 'admin';
+            $user->email = 'admin@test.com';
+            $user->setPassword('admin');
+            $user->generateAuthKey();
+            $user->status = 10;
+            if ($user->save()) {
+                echo 'good';
+                $adminRole = Yii::$app->authManager->getRole('admin');
+                Yii::$app->authManager->assign($adminRole, $user->id);
+            }
+        }
     }
 }
