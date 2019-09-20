@@ -6,7 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "task".
+ * This is the model class for table "project".
  *
  * @property int $id
  * @property string $name
@@ -22,16 +22,17 @@ use yii\behaviors\TimestampBehavior;
  * @property Priority $priority
  * @property User $reporter
  * @property Status $status
- * @property TaskTag[] $taskTags
+ * @property ProjectTag[] $projectTags
+ * @property Task[] $tasks
  */
-class Task extends \yii\db\ActiveRecord
+class Project extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'task';
+        return 'project';
     }
 
     public function behaviors()
@@ -67,7 +68,7 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'status_id', 'priority_id'], 'required'],
+            [['name', 'author_id', 'reporter_id', 'status_id', 'priority_id'], 'required'],
             [['author_id', 'reporter_id', 'status_id', 'priority_id', 'created_at', 'updated_at'], 'integer'],
             [['name', 'description'], 'string', 'max' => 255],
             [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['author_id' => 'id']],
@@ -130,8 +131,16 @@ class Task extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTaskTags()
+    public function getProjectTags()
     {
-        return $this->hasMany(TaskTag::className(), ['task_id' => 'id']);
+        return $this->hasMany(ProjectTag::className(), ['project_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTasks()
+    {
+        return $this->hasMany(Task::className(), ['project_id' => 'id']);
     }
 }

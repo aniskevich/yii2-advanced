@@ -2,14 +2,14 @@
 
 namespace common\models;
 
-use common\models\Task;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use common\models\Project;
 
 /**
- * TaskSearch represents the model behind the search form of `common\models\Task`.
+ * ProjectSearch represents the model behind the search form of `common\models\Project`.
  */
-class TaskSearch extends Task
+class ProjectSearch extends Project
 {
     /**
      * {@inheritdoc}
@@ -40,42 +40,7 @@ class TaskSearch extends Task
      */
     public function search($params)
     {
-        $query = Task::find();
-
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'author_id' => $this->author_id,
-            'reporter_id' => $this->reporter_id,
-            'status_id' => $this->status_id,
-            'priority_id' => $this->priority_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
-
-        return $dataProvider;
-    }
-
-    public function searchCurrentProject($params)
-    {
-        $query = Task::find()->where(['project_id' => \Yii::$app->request->get('id')]);
+        $query = Project::find();
 
         // add conditions that should always apply here
 
