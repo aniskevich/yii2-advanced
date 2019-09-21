@@ -31,8 +31,6 @@ foreach ( \common\models\Priority::find()->all() as $p) {
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'author_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false) ?>
-
     <?= $form->field($model, 'reporter_id')->dropDownList([$users])?>
 
     <?= $form->field($model, 'status_id')->dropDownList([$status]) ?>
