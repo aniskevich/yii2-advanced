@@ -10,6 +10,7 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property int $user_id
+ * @property int project_id
  * @property string $message
  * @property int $created_at
  *
@@ -65,6 +66,16 @@ class ChatLog extends ActiveRecord
         $model = new self();
         $model->user_id = User::findByUsername($msg['username'])->id;
         $model->message = $msg['message'];
+        $model->created_at = time();
+        $model->save();
+    }
+
+    public static function saveNotification($msg, $pid)
+    {
+        $model = new self();
+        $model->user_id = Yii::$app->user->id;
+        $model->message = $msg;
+        $model->project_id = $pid;
         $model->created_at = time();
         $model->save();
     }
