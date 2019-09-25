@@ -4,6 +4,9 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\web\Linkable;
+use yii\web\Link;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "task".
@@ -25,7 +28,7 @@ use yii\behaviors\TimestampBehavior;
  * @property Status $status
  * @property TaskTag[] $taskTags
  */
-class Task extends \yii\db\ActiveRecord
+class Task extends \yii\db\ActiveRecord implements Linkable
 {
     private $notification;
     /**
@@ -169,5 +172,29 @@ class Task extends \yii\db\ActiveRecord
     public function getProject()
     {
         return $this->hasOne(Project::className(), ['id' => 'project_id']);
+    }
+
+    public function getLinks()
+    {
+        return [
+            Link::REL_SELF => Url::to(['task/view', 'id' => $this->id], true),
+            'author' => Url::to(['user/view', 'id' => $this->author_id], true),
+            'reporter' => Url::to(['user/view', 'id' => $this->reporter_id], true),
+            'project' => Url::to(['project/view', 'id' => $this->project_id], true),
+        ];
+    }
+
+    public function fields()
+    {
+        $parentFields = parent::fields();
+        $modelFields = [
+            'created_at' => function() {
+                return Yii::$app->formatter->asDatetime($this->created_at);
+            },
+            'updated_at' => function() {
+                return Yii::$app->formatter->asDatetime($this->created_at);
+            }
+        ];
+        return array_merge($parentFields, $modelFields);
     }
 }
