@@ -5,6 +5,7 @@ namespace common\models;
 use common\models\Task;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\data\SqlDataProvider;
 
 /**
  * TaskSearch represents the model behind the search form of `common\models\Task`.
@@ -104,6 +105,16 @@ class TaskSearch extends Task
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'description', $this->description]);
+
+        return $dataProvider;
+    }
+
+    public function apiIndex()
+    {
+
+        $dataProvider = new SqlDataProvider([
+            'sql' => "SELECT id, name FROM task",
+        ]);
 
         return $dataProvider;
     }
