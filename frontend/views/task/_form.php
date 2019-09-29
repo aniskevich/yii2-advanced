@@ -1,31 +1,12 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Task */
 /* @var $form yii\widgets\ActiveForm */
-
-$users = [];
-foreach ( \common\models\User::find()->all() as $user) {
-    $users[] = $user->username;
-}
-
-$project = [];
-foreach (\common\models\Project::find()->all() as $proj) {
-    $project[] = $proj->name;
-}
-
-$status = [];
-foreach ( \common\models\Status::find()->all() as $s) {
-    $status[] = $s->name;
-}
-
-$priority = [];
-foreach ( \common\models\Priority::find()->all() as $p) {
-    $priority[] = $p->name;
-}
 
 ?>
 
@@ -37,13 +18,13 @@ foreach ( \common\models\Priority::find()->all() as $p) {
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'reporter_id')->dropDownList([$users])->label('Reporter') ?>
+    <?= $form->field($model, 'reporter_id')->dropDownList(ArrayHelper::map($options['user'], 'id', 'username'))->label('Reporter') ?>
 
-    <?= $form->field($model, 'project_id')->dropDownList([$project])->label('Project') ?>
+    <?= $form->field($model, 'project_id')->dropDownList(ArrayHelper::map($options['project'], 'id', 'name'))->label('Project') ?>
 
-    <?= $form->field($model, 'status_id')->dropDownList([$status])->label('Status')  ?>
+    <?= $form->field($model, 'status_id')->dropDownList(ArrayHelper::map($options['status'], 'id', 'name'))->label('Status') ?>
 
-    <?= $form->field($model, 'priority_id')->dropDownList([$priority])->label('Priority') ?>
+    <?= $form->field($model, 'priority_id')->dropDownList(ArrayHelper::map($options['priority'], 'id', 'name'))->label('Priority') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

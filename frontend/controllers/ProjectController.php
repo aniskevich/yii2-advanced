@@ -143,9 +143,6 @@ class ProjectController extends Controller
             'user' => ArrayHelper::toArray(User::find()->all(), [
                 'common\models\User' => ['id', 'username']
             ]),
-            'project' => ArrayHelper::toArray(Project::find()->all(), [
-                'common\models\Project' => ['id', 'name']
-            ]),
             'status' => ArrayHelper::toArray(Status::find()->all(), [
                 'common\models\Status' => ['id', 'name']
             ]),

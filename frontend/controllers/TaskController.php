@@ -2,9 +2,14 @@
 
 namespace frontend\controllers;
 
+use common\models\Priority;
+use common\models\Project;
+use common\models\Status;
+use common\models\User;
 use Yii;
 use common\models\Task;
 use common\models\TaskSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -72,6 +77,7 @@ class TaskController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'options' => $this->dropDownOption(),
         ]);
     }
 
@@ -92,6 +98,7 @@ class TaskController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'options' => $this->dropDownOption(),
         ]);
     }
 
@@ -123,5 +130,23 @@ class TaskController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function dropDownOption()
+    {
+        return [
+            'user' => ArrayHelper::toArray(User::find()->all(), [
+                'common\models\User' => ['id', 'username']
+            ]),
+            'project' => ArrayHelper::toArray(Project::find()->all(), [
+                'common\models\Project' => ['id', 'name']
+            ]),
+            'status' => ArrayHelper::toArray(Status::find()->all(), [
+                'common\models\Status' => ['id', 'name']
+            ]),
+            'priority' => ArrayHelper::toArray(Priority::find()->all(), [
+                'common\models\Priority' => ['id', 'name']
+            ]),
+        ];
     }
 }
