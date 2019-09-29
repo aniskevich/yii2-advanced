@@ -1,23 +1,18 @@
 <?php
 
-namespace frontend\controllers;
+namespace backend\controllers;
 
-use common\models\Priority;
-use common\models\Status;
-use common\models\TaskSearch;
-use common\models\User;
 use Yii;
-use common\models\Project;
-use common\models\ProjectSearch;
-use yii\helpers\ArrayHelper;
+use common\models\Status;
+use common\models\StatusSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ProjectController implements the CRUD actions for Project model.
+ * StatusController implements the CRUD actions for Status model.
  */
-class ProjectController extends Controller
+class StatusController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -35,12 +30,12 @@ class ProjectController extends Controller
     }
 
     /**
-     * Lists all Project models.
+     * Lists all Status models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProjectSearch();
+        $searchModel = new StatusSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -50,31 +45,26 @@ class ProjectController extends Controller
     }
 
     /**
-     * Displays a single Project model.
+     * Displays a single Status model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $searchModel = new TaskSearch();
-        $dataProvider = $searchModel->searchCurrentProject(Yii::$app->request->queryParams);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider
         ]);
     }
 
     /**
-     * Creates a new Project model.
+     * Creates a new Status model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Project();
+        $model = new Status();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -82,12 +72,11 @@ class ProjectController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'options' => $this->dropDownOption(),
         ]);
     }
 
     /**
-     * Updates an existing Project model.
+     * Updates an existing Status model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -103,12 +92,11 @@ class ProjectController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'options' => $this->dropDownOption(),
         ]);
     }
 
     /**
-     * Deletes an existing Project model.
+     * Deletes an existing Status model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -122,36 +110,18 @@ class ProjectController extends Controller
     }
 
     /**
-     * Finds the Project model based on its primary key value.
+     * Finds the Status model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Project the loaded model
+     * @return Status the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Project::findOne($id)) !== null) {
+        if (($model = Status::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    private function dropDownOption()
-    {
-        return [
-            'user' => ArrayHelper::toArray(User::find()->all(), [
-                'common\models\User' => ['id', 'username']
-            ]),
-            'project' => ArrayHelper::toArray(Project::find()->all(), [
-                'common\models\Project' => ['id', 'name']
-            ]),
-            'status' => ArrayHelper::toArray(Status::find()->all(), [
-                'common\models\Status' => ['id', 'name']
-            ]),
-            'priority' => ArrayHelper::toArray(Priority::find()->all(), [
-                'common\models\Priority' => ['id', 'name']
-            ]),
-        ];
     }
 }

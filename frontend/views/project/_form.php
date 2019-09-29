@@ -2,24 +2,11 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Project */
 /* @var $form yii\widgets\ActiveForm */
-$users = [];
-foreach ( \common\models\User::find()->all() as $user) {
-    $users[] = $user->username;
-}
-
-$status = [];
-foreach ( \common\models\Status::find()->all() as $s) {
-    $status[] = $s->name;
-}
-
-$priority = [];
-foreach ( \common\models\Priority::find()->all() as $p) {
-    $priority[] = $p->name;
-}
 
 ?>
 
@@ -31,11 +18,11 @@ foreach ( \common\models\Priority::find()->all() as $p) {
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'reporter_id')->dropDownList([$users])?>
+    <?= $form->field($model, 'reporter_id')->dropDownList(ArrayHelper::map($options['user'], 'id', 'username'))->label('Reporter') ?>
 
-    <?= $form->field($model, 'status_id')->dropDownList([$status]) ?>
+    <?= $form->field($model, 'status_id')->dropDownList(ArrayHelper::map($options['status'], 'id', 'name'))->label('Status') ?>
 
-    <?= $form->field($model, 'priority_id')->dropDownList([$priority]) ?>
+    <?= $form->field($model, 'priority_id')->dropDownList(ArrayHelper::map($options['priority'], 'id', 'name'))->label('Priority') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

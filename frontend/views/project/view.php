@@ -1,5 +1,8 @@
 <?php
 
+use common\models\Priority;
+use common\models\Status;
+use common\models\User;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -33,12 +36,36 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'description',
-            'author_id',
-            'reporter_id',
-            'status_id',
-            'priority_id',
-            'created_at',
-            'updated_at',
+            [
+                'label' => 'Author',
+                'attribute' => 'author_id',
+                'value' => function($model) {
+                    return User::findOne($model->author_id)->username;
+                }
+            ],
+            [
+                'label' => 'Reporter',
+                'attribute' => 'reporter_id',
+                'value' => function($model) {
+                    return User::findOne($model->reporter_id)->username;
+                }
+            ],
+            [
+                'label' => 'Status',
+                'attribute' => 'status_id',
+                'value' => function($model) {
+                    return Status::findOne($model->status_id)->name;
+                }
+            ],
+            [
+                'label' => 'Priority',
+                'attribute' => 'priority_id',
+                'value' => function($model) {
+                    return Priority::findOne($model->priority_id)->name;
+                }
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 
