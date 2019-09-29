@@ -43,10 +43,10 @@ return [
             ],
         ],
     ],
-    'modules' => [
-        'task' => [
-            'class' => 'frontend\modules\task\Module',
-        ],
-    ],
+//    'modules' => [
+//        'task' => [
+//            'class' => 'frontend\modules\task\Module',
+//        ],
+//    ],
     'params' => $params,
 ];
