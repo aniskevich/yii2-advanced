@@ -105,6 +105,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'label' => 'Project',
+                'attribute' => 'project_id',
+                'filter'=>ArrayHelper::map(Project::find()->asArray()->all(), 'id', 'name'),
+                'value' => function($model) {
+                    return Project::findOne($model->project_id)->name;
+                }
+            ],
+            [
                 'label' => 'Status',
                 'attribute' => 'status_id',
                 'filter'=>ArrayHelper::map(Status::find()->asArray()->all(), 'id', 'name'),

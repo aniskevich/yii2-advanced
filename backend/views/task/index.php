@@ -1,77 +1,29 @@
 <?php
 
 use common\models\Priority;
-use common\models\Project;
 use common\models\Status;
 use common\models\User;
-use yii\grid\GridView;
+use common\models\Project;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Project */
+/* @var $searchModel common\models\TaskSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Projects', 'url' => ['index']];
+$this->title = 'Tasks';
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
-<div class="project-view">
+<div class="task-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= Html::a('Create Task', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'description',
-            [
-                'label' => 'Author',
-                'attribute' => 'author_id',
-                'value' => function($model) {
-                    return User::findOne($model->author_id)->username;
-                }
-            ],
-            [
-                'label' => 'Reporter',
-                'attribute' => 'reporter_id',
-                'value' => function($model) {
-                    return User::findOne($model->reporter_id)->username;
-                }
-            ],
-            [
-                'label' => 'Status',
-                'attribute' => 'status_id',
-                'value' => function($model) {
-                    return Status::findOne($model->status_id)->name;
-                }
-            ],
-            [
-                'label' => 'Priority',
-                'attribute' => 'priority_id',
-                'value' => function($model) {
-                    return Priority::findOne($model->priority_id)->name;
-                }
-            ],
-            'created_at:datetime',
-            'updated_at:datetime',
-        ],
-    ]) ?>
-
-    <h4>Tasks:</h4>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -105,6 +57,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'label' => 'Project',
+                'attribute' => 'project_id',
+                'filter'=>ArrayHelper::map(Project::find()->asArray()->all(), 'id', 'name'),
+                'value' => function($model) {
+                    return Project::findOne($model->project_id)->name;
+                }
+            ],
+            [
                 'label' => 'Status',
                 'attribute' => 'status_id',
                 'filter'=>ArrayHelper::map(Status::find()->asArray()->all(), 'id', 'name'),
@@ -123,7 +83,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_at',
             //'updated_at',
 
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
 
 </div>
